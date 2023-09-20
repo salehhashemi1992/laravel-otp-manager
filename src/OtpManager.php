@@ -256,7 +256,7 @@ class OtpManager
      *
      * @throws \InvalidArgumentException
      */
-    private function validateMobile(string $mobile): void
+    protected function validateMobile(string $mobile): void
     {
         if (empty($mobile)) {
             throw new \InvalidArgumentException('Mobile number cannot be empty.');
