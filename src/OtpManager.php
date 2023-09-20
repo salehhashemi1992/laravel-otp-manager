@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Salehhashemi\OtpManager;
 
-use App\Events\OtpProcessed;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Salehhashemi\ConfigurableCache\ConfigurableCache;
 use Salehhashemi\OtpManager\Dto\OtpDto;
 use Salehhashemi\OtpManager\Dto\SentOtpDto;
+use Salehhashemi\OtpManager\Events\OtpPrepared;
 
 /* A class that is responsible for sending and verifying one time passwords. */
 class OtpManager
@@ -19,9 +19,6 @@ class OtpManager
 
     private string $type;
 
-    /**
-     * @var int
-     */
     private int $waitingTime;
 
     public function __construct()
@@ -32,11 +29,13 @@ class OtpManager
     /**
      * Send a new OTP.
      *
-     * @param string $mobile Mobile number
-     * @param string $type
-     * @return \Salehhashemi\OtpManager\Dto\SentOtpDto
+     * Generates a new OTP code, triggers an event, and returns the sent OTP details.
      *
-     * @throws \Exception
+     * @param  string  $mobile  The mobile number to which the OTP should be sent.
+     * @param  string  $type    The type or category of OTP being sent (e.g., 'login', 'reset_password').
+     * @return \Salehhashemi\OtpManager\Dto\SentOtpDto  An object containing details of the sent OTP.
+     *
+     * @throws \Exception  If the OTP generation fails or any other exception occurs.
      */
     public function send(string $mobile, string $type): SentOtpDto
     {
@@ -45,7 +44,7 @@ class OtpManager
 
         $otp = new SentOtpDto($this->getNewCode($mobile), $this->waitingTime, $this->trackingCode);
 
-        event(new OtpProcessed(mobile: $mobile, code: (string) $otp->code));
+        event(new OtpPrepared(mobile: $mobile, code: (string) $otp->code));
 
         return $otp;
     }
@@ -53,11 +52,15 @@ class OtpManager
     /**
      * Resend OTP based on waiting time.
      *
-     * @param string $mobile The mobile number to send the OTP to.
-     * @param string $type
-     * @return \Salehhashemi\OtpManager\Dto\SentOtpDto Sent Otp Dto object
+     * Checks if the waiting time has passed since the last OTP was sent.
+     * If so, resends the OTP to the given mobile number; otherwise, throws a ValidationException.
      *
-     * @throws \Exception
+     * @param  string  $mobile  The mobile number to which the OTP should be resent.
+     * @param  string  $type    The type or category of OTP being sent (e.g., 'login', 'reset_password').
+     * @return \Salehhashemi\OtpManager\Dto\SentOtpDto  An object containing details of the sent OTP.
+     *
+     * @throws \Illuminate\Validation\ValidationException  If the OTP cannot be resent due to throttle restrictions.
+     * @throws \Exception  If any other exception occurs.
      */
     public function sendAndRetryCheck(string $mobile, string $type): SentOtpDto
     {
@@ -83,13 +86,16 @@ class OtpManager
     /**
      * Verify the OTP code.
      *
-     * @param string $mobile Mobile number
-     * @param string $type
-     * @param int $otp Otp
-     * @param string|null $trackingCode
-     * @return bool
+     * Compares the provided OTP code and tracking code with the stored ones
+     * for the given mobile number and OTP type. Returns true if they match.
+     *
+     * @param  string  $mobile The mobile number associated with the OTP.
+     * @param  string  $type The type or category of OTP (e.g., 'login', 'reset_password').
+     * @param  int  $otp The OTP code to verify.
+     * @param  string  $trackingCode The tracking code associated with the OTP.
+     * @return bool  True if the provided OTP and tracking code match the stored ones, false otherwise.
      */
-    public function verify(string $mobile, string $type, int $otp, ?string $trackingCode): bool
+    public function verify(string $mobile, string $type, int $otp, string $trackingCode): bool
     {
         $this->type = $type;
         $this->trackingCode = $trackingCode;
@@ -102,9 +108,12 @@ class OtpManager
     /**
      * Fetch the OTP code for verification.
      *
-     * @param string $mobile Mobile number
-     * @param string $type
-     * @return OtpDto|null
+     * Retrieves the OTP code associated with the given mobile number and OTP type from the cache.
+     * Returns null if the mobile number is empty or if no OTP code is found.
+     *
+     * @param  string  $mobile  The mobile number associated with the OTP.
+     * @param  string  $type    The type or category of OTP (e.g., 'login', 'reset_password').
+     * @return \Salehhashemi\OtpManager\Dto\OtpDto|null  An OtpDto object containing the OTP code and tracking code, or null if not found.
      */
     public function getVerifyCode(string $mobile, string $type): ?OtpDto
     {
@@ -118,9 +127,7 @@ class OtpManager
     }
 
     /**
-     * @param string $mobile Mobile number
-     * @param string $type
-     * @return bool
+     * Delete the verification code for a mobile number.
      */
     public function deleteVerifyCode(string $mobile, string $type): bool
     {
@@ -134,10 +141,9 @@ class OtpManager
     }
 
     /**
-     * It returns the time when the OTP was sent to the user
+     * Retrieve the time when the OTP was sent to the user.
      *
-     * @param  string  $mobile The mobile number to send the OTP to.
-     * @return \Illuminate\Support\Carbon|null A Carbon instance of the time the OTP was sent.
+     * @return \Illuminate\Support\Carbon|null A Carbon instance representing the time the OTP was sent, or null if not available.
      */
     public function getSentAt(string $mobile, string $type): ?Carbon
     {
@@ -156,10 +162,9 @@ class OtpManager
     }
 
     /**
-     * > It checks if the cache key exists in the cache store
+     * Check if a verification code has been sent to a specified mobile number.
      *
-     * @param  string  $mobile The mobile number to send the OTP to.
-     * @return bool The function isVerifyCodeHasBeenSent() is returning a boolean value.
+     * @return bool    True if the verification code has been sent, false otherwise.
      */
     public function isVerifyCodeHasBeenSent(string $mobile, string $type): bool
     {
@@ -173,10 +178,9 @@ class OtpManager
     }
 
     /**
-     * @param  string  $mobile Mobile number
-     * @return int
+     * Generate a new OTP code within the configured range and store it in the cache.
      *
-     * @throws \Exception
+     * @throws \Exception  If random number generation fails.
      */
     protected function getNewCode(string $mobile): int
     {
@@ -194,9 +198,15 @@ class OtpManager
     }
 
     /**
-     * @param  string  $mobile Mobile number
-     * @param  string  $for Cache key for
-     * @return string
+     * Generate a cache key for storing or retrieving OTP-related information.
+     *
+     * This function constructs a cache key by combining the mobile number,
+     * the intended usage ('for'), and the OTP type. The generated key is
+     * used for caching OTP values and associated information.
+     *
+     * @param  string  $mobile  The mobile number to which the OTP will be sent.
+     * @param  string  $for     Indicates the intended usage of the cache key (e.g., 'value', 'created').
+     * @return string  The generated cache key.
      */
     protected function getCacheKey(string $mobile, string $for): string
     {
