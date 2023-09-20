@@ -109,6 +109,31 @@ php artisan config:clear
 ```
 Then, you can adjust the waiting_time, code_min, and code_max in the `config/otp.php`
 
+## Custom Mobile Number Validation
+The package comes with a default mobile number validator, but you can easily use your own. 
+
+Here's how you can do it:
+
+1. Create a Custom Validator Class
+First, create a class that implements `MobileValidatorInterface`. This interface expects you to define a validate method.
+    ```bash
+    namespace YourNamespace;
+    
+    use Salehhashemi\OtpManager\Contracts\MobileValidatorInterface;
+    
+    class CustomMobileValidator implements MobileValidatorInterface
+    {
+        public function validate(string $mobile): void
+        {
+            // Your validation logic here
+        }
+    }
+    ```
+2. Update Configuration
+Next, open your OTP configuration file and update the `mobile_validation_class` option to use your custom validator class:
+    ```bash
+    'mobile_validation_class' => CustomMobileValidator::class,
+    ```
 
 ### Exceptions
 * `\InvalidArgumentException` will be thrown if the mobile number is empty.

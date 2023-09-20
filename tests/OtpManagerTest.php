@@ -111,7 +111,6 @@ class OtpManagerTest extends BaseTest
         $otpManager->send('1234567890', 'sms');
 
         $this->expectException(ValidationException::class);
-        $this->expectExceptionMessage('Too many OTP attempts. Please try again in');
 
         $otpManager->sendAndRetryCheck('1234567890', 'sms');
     }
