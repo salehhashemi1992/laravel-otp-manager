@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  php:
+    build: ./
+    restart: unless-stopped
+    init: true
+    volumes:
+      - .:/var/www/application
+    working_dir: /var/www/application

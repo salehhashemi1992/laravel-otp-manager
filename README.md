@@ -115,6 +115,23 @@ Then, you can adjust the waiting_time, code_min, and code_max in the `config/otp
 * `\Exception` will be thrown for general exceptions, like OTP generation failures.
 * `\Illuminate\Validation\ValidationException` will be thrown for throttle restrictions.
 
+## Docker Setup
+This project uses Docker for local development and testing. Make sure you have Docker and Docker Compose installed on your system before proceeding.
+
+### Build the Docker images
+```bash
+docker-compose build
+```
+
+### Start the services
+```bash
+docker-compose up -d
+```
+To access the PHP container, you can use:
+```bash
+docker-compose exec php bash
+```
+
 ### Testing
 
 ```bash
