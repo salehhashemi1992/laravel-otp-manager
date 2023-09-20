@@ -5,6 +5,7 @@
 [![GitHub Actions](https://img.shields.io/github/actions/workflow/status/salehhashemi1992/laravel-otp-manager/run-tests.yml?branch=main&label=tests)](https://github.com/salehhashemi1992/laravel-otp-manager/actions/workflows/run-tests.yml)
 [![StyleCI](https://github.styleci.io/repos/693593653/shield?branch=main)](https://github.styleci.io/repos/693593653?branch=main)
 
+![Header Image](./assets/header.png)
 
 The OtpManager class is responsible for sending and verifying one-time passwords (OTPs). It provides a comprehensive set of methods to generate, send, verify, and manage OTPs. It also integrates with Laravel cache system to throttle OTP sending and provides a layer of security by tracking OTP requests.
 
