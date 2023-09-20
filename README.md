@@ -19,7 +19,7 @@ The `OtpManager` class is responsible for sending and verifying one-time passwor
 ## Installation
 To install the package, you can run the following command:
 ```bash
-composer require Salehhashemi/OtpManager
+composer require salehhashemi/laravel-otp-manager
 ```
 ## Usage
 Create an instance of `OtpManager`:
@@ -50,7 +50,7 @@ The `OtpManager` package emits an `OtpPrepared` event whenever a new OTP is gene
 Here's how to set up an event listener:
 
 ### Step 1: Register the Event and Listener
-First, you need to register the `OtpPrepared` event and its corresponding listener. Open your EventServiceProvider file, usually located at `app/Providers/EventServiceProvider.php`, and add the event and listener to the $listen array.
+First, you need to register the `OtpPrepared` event and its corresponding listener. Open your `EventServiceProvider` file, usually located at `app/Providers/EventServiceProvider.php`, and add the event and listener to the $listen array.
 
 ```bash
 protected $listen = [
@@ -111,9 +111,9 @@ Then, you can adjust the waiting_time, code_min, and code_max in the `config/otp
 
 
 ### Exceptions
-* \InvalidArgumentException will be thrown if the mobile number is empty.
-* \Exception will be thrown for general exceptions, like OTP generation failures.
-* \Illuminate\Validation\ValidationException will be thrown for throttle restrictions.
+* `\InvalidArgumentException` will be thrown if the mobile number is empty.
+* `\Exception` will be thrown for general exceptions, like OTP generation failures.
+* `\Illuminate\Validation\ValidationException` will be thrown for throttle restrictions.
 
 ### Testing
 
