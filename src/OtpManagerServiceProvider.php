@@ -11,9 +11,17 @@ class OtpManagerServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        if ($this->app->runningInConsole()) {
-            $this->bootForConsole();
-        }
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'OtpManager');
+
+        // Publishing the lang file.
+        $this->publishes([
+            __DIR__.'/../resources/lang' => resource_path('lang/vendor/otp-manager'),
+        ], 'translations');
+
+        // Publishing the configuration file.
+        $this->publishes([
+            __DIR__.'/../config/otp.php' => config_path('otp.php'),
+        ], 'otp.config');
     }
 
     /**
@@ -22,16 +30,5 @@ class OtpManagerServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__.'/../config/otp.php', 'otp');
-    }
-
-    /**
-     * Console-specific booting.
-     */
-    protected function bootForConsole(): void
-    {
-        // Publishing the configuration file.
-        $this->publishes([
-            __DIR__.'/../config/otp.php' => config_path('otp.php'),
-        ], 'otp.config');
     }
 }

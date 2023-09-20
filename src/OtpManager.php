@@ -76,9 +76,11 @@ class OtpManager
             return $this->send($mobile, $type);
         }
 
+        $remainingTime = $retryAfter->diffInSeconds(Carbon::now());
+
         throw ValidationException::withMessages([
             'otp' => [
-                trans('auth.throttle', ['seconds' => $this->waitingTime]),
+                trans('OtpManager::otp.throttle', ['seconds' => $remainingTime]),
             ],
         ]);
     }
