@@ -7,7 +7,7 @@
 
 ![Header Image](./assets/header.png)
 
-The OtpManager class is responsible for sending and verifying one-time passwords (OTPs). It provides a comprehensive set of methods to generate, send, verify, and manage OTPs. It also integrates with Laravel cache system to throttle OTP sending and provides a layer of security by tracking OTP requests.
+The `OtpManager` class is responsible for sending and verifying one-time passwords (OTPs). It provides a comprehensive set of methods to generate, send, verify, and manage OTPs. It also integrates with Laravel cache system to throttle OTP sending and provides a layer of security by tracking OTP requests.
 
 ## Features
 * Generate OTP codes
@@ -45,12 +45,12 @@ $isDeleted = $otpManager->deleteVerifyCode("1234567890", "login");
 ```
 
 ## Handling and Listening to the `OtpPrepared` Event
-The OtpManager package emits an `OtpPrepared` event whenever a new OTP is generated. You can listen to this event and execute custom logic, such as sending the OTP via SMS or email. 
+The `OtpManager` package emits an `OtpPrepared` event whenever a new OTP is generated. You can listen to this event and execute custom logic, such as sending the OTP via SMS or email. 
 
 Here's how to set up an event listener:
 
 ### Step 1: Register the Event and Listener
-First, you need to register the OtpPrepared event and its corresponding listener. Open your EventServiceProvider file, usually located at `app/Providers/EventServiceProvider.php`, and add the event and listener to the $listen array.
+First, you need to register the `OtpPrepared` event and its corresponding listener. Open your EventServiceProvider file, usually located at `app/Providers/EventServiceProvider.php`, and add the event and listener to the $listen array.
 
 ```bash
 protected $listen = [
