@@ -22,7 +22,7 @@ To install the package, you can run the following command:
 composer require Salehhashemi/OtpManager
 ```
 ## Usage
-Create an instance of OtpManager:
+Create an instance of `OtpManager`:
 ```bash
 $otpManager = new \Salehhashemi\OtpManager\OtpManager();
 ```
@@ -31,12 +31,13 @@ $otpManager = new \Salehhashemi\OtpManager\OtpManager();
 $sentOtp = $otpManager->send("1234567890", "login");
 ```
 ### Resending OTP
+The `sendAndRetryCheck` method will throw a `ValidationException` if you try to resend the OTP before the waiting time expires.
 ```bash
-$isVerified = $otpManager->verify("1234567890", "login", 123456, "uuid-string");
+$sentOtp = $otpManager->sendAndRetryCheck("1234567890", "login");
 ```
 ### Verifying OTP
 ```bash
-$otpManager = new \Salehhashemi\OtpManager\OtpManager();
+$isVerified = $otpManager->verify("1234567890", "login", 123456, "uuid-string");
 ```
 ### Deleting Verification Code
 ```bash
