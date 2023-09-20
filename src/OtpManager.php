@@ -32,11 +32,11 @@ class OtpManager
      * Generates a new OTP code, triggers an event, and returns the sent OTP details.
      *
      * @param  string  $mobile  The mobile number to which the OTP should be sent.
-     * @param  string  $type    The type or category of OTP being sent (e.g., 'login', 'reset_password').
-     * @return \Salehhashemi\OtpManager\Dto\SentOtpDto  An object containing details of the sent OTP.
+     * @param  string  $type  The type or category of OTP being sent (e.g., 'login', 'reset_password').
+     * @return \Salehhashemi\OtpManager\Dto\SentOtpDto An object containing details of the sent OTP.
      *
-     * @throws \InvalidArgumentException  If the Mobile string is empty
-     * @throws \Exception  If the OTP generation fails or any other exception occurs.
+     * @throws \InvalidArgumentException If the Mobile string is empty
+     * @throws \Exception If the OTP generation fails or any other exception occurs.
      */
     public function send(string $mobile, string $type): SentOtpDto
     {
@@ -59,12 +59,12 @@ class OtpManager
      * If so, resends the OTP to the given mobile number; otherwise, throws a ValidationException.
      *
      * @param  string  $mobile  The mobile number to which the OTP should be resent.
-     * @param  string  $type    The type or category of OTP being sent (e.g., 'login', 'reset_password').
-     * @return \Salehhashemi\OtpManager\Dto\SentOtpDto  An object containing details of the sent OTP.
+     * @param  string  $type  The type or category of OTP being sent (e.g., 'login', 'reset_password').
+     * @return \Salehhashemi\OtpManager\Dto\SentOtpDto An object containing details of the sent OTP.
      *
-     * @throws \InvalidArgumentException  If the Mobile string is empty
-     * @throws \Illuminate\Validation\ValidationException  If the OTP cannot be resent due to throttle restrictions.
-     * @throws \Exception  If any other exception occurs.
+     * @throws \InvalidArgumentException If the Mobile string is empty
+     * @throws \Illuminate\Validation\ValidationException If the OTP cannot be resent due to throttle restrictions.
+     * @throws \Exception If any other exception occurs.
      */
     public function sendAndRetryCheck(string $mobile, string $type): SentOtpDto
     {
@@ -97,13 +97,13 @@ class OtpManager
      * Compares the provided OTP code and tracking code with the stored ones
      * for the given mobile number and OTP type. Returns true if they match.
      *
-     * @param  string  $mobile The mobile number associated with the OTP.
-     * @param  string  $type The type or category of OTP (e.g., 'login', 'reset_password').
-     * @param  int  $otp The OTP code to verify.
-     * @param  string  $trackingCode The tracking code associated with the OTP.
-     * @return bool  True if the provided OTP and tracking code match the stored ones, false otherwise.
+     * @param  string  $mobile  The mobile number associated with the OTP.
+     * @param  string  $type  The type or category of OTP (e.g., 'login', 'reset_password').
+     * @param  int  $otp  The OTP code to verify.
+     * @param  string  $trackingCode  The tracking code associated with the OTP.
+     * @return bool True if the provided OTP and tracking code match the stored ones, false otherwise.
      *
-     * @throws \InvalidArgumentException  If the Mobile string is empty
+     * @throws \InvalidArgumentException If the Mobile string is empty
      */
     public function verify(string $mobile, string $type, int $otp, string $trackingCode): bool
     {
@@ -124,10 +124,10 @@ class OtpManager
      * Returns null if the mobile number is empty or if no OTP code is found.
      *
      * @param  string  $mobile  The mobile number associated with the OTP.
-     * @param  string  $type    The type or category of OTP (e.g., 'login', 'reset_password').
-     * @return \Salehhashemi\OtpManager\Dto\OtpDto|null  An OtpDto object containing the OTP code and tracking code, or null if not found.
+     * @param  string  $type  The type or category of OTP (e.g., 'login', 'reset_password').
+     * @return \Salehhashemi\OtpManager\Dto\OtpDto|null An OtpDto object containing the OTP code and tracking code, or null if not found.
      *
-     * @throws \InvalidArgumentException  If the Mobile string is empty
+     * @throws \InvalidArgumentException If the Mobile string is empty
      */
     public function getVerifyCode(string $mobile, string $type): ?OtpDto
     {
@@ -145,7 +145,7 @@ class OtpManager
     /**
      * Delete the verification code for a mobile number.
      *
-     * @throws \InvalidArgumentException  If the Mobile string is empty
+     * @throws \InvalidArgumentException If the Mobile string is empty
      */
     public function deleteVerifyCode(string $mobile, string $type): bool
     {
@@ -165,7 +165,7 @@ class OtpManager
      *
      * @return \Illuminate\Support\Carbon|null A Carbon instance representing the time the OTP was sent, or null if not available.
      *
-     * @throws \InvalidArgumentException  If the Mobile string is empty
+     * @throws \InvalidArgumentException If the Mobile string is empty
      */
     public function getSentAt(string $mobile, string $type): ?Carbon
     {
@@ -188,9 +188,9 @@ class OtpManager
     /**
      * Check if a verification code has been sent to a specified mobile number.
      *
-     * @return bool    True if the verification code has been sent, false otherwise.
+     * @return bool True if the verification code has been sent, false otherwise.
      *
-     * @throws \InvalidArgumentException  If the Mobile string is empty
+     * @throws \InvalidArgumentException If the Mobile string is empty
      */
     public function isVerifyCodeHasBeenSent(string $mobile, string $type): bool
     {
@@ -208,8 +208,8 @@ class OtpManager
     /**
      * Generate a new OTP code within the configured range and store it in the cache.
      *
-     * @throws \Exception  If random number generation fails.
-     * @throws \InvalidArgumentException  If the Mobile string is empty
+     * @throws \Exception If random number generation fails.
+     * @throws \InvalidArgumentException If the Mobile string is empty
      */
     protected function getNewCode(string $mobile): int
     {
@@ -236,10 +236,10 @@ class OtpManager
      * used for caching OTP values and associated information.
      *
      * @param  string  $mobile  The mobile number to which the OTP will be sent.
-     * @param  string  $for     Indicates the intended usage of the cache key (e.g., 'value', 'created').
-     * @return string  The generated cache key.
+     * @param  string  $for  Indicates the intended usage of the cache key (e.g., 'value', 'created').
+     * @return string The generated cache key.
      *
-     * @throws \InvalidArgumentException  If the Mobile string is empty
+     * @throws \InvalidArgumentException If the Mobile string is empty
      */
     protected function getCacheKey(string $mobile, string $for): string
     {
