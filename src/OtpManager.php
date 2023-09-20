@@ -12,7 +12,6 @@ use Salehhashemi\OtpManager\Dto\OtpDto;
 use Salehhashemi\OtpManager\Dto\SentOtpDto;
 use Salehhashemi\OtpManager\Events\OtpPrepared;
 
-/* A class that is responsible for sending and verifying one time passwords. */
 class OtpManager
 {
     private string $trackingCode;
