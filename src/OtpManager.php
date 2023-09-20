@@ -180,7 +180,10 @@ class OtpManager
      */
     protected function getNewCode(string $mobile): int
     {
-        $otp = random_int(111111, 999999);
+        $min = config('otp.code_min');
+        $max = config('otp.code_max');
+
+        $otp = random_int($min, $max);
 
         $otpDto = new OtpDto($otp, $this->trackingCode);
 
