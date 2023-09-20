@@ -8,6 +8,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Salehhashemi\ConfigurableCache\ConfigurableCache;
+use Salehhashemi\OtpManager\Contracts\MobileValidatorInterface;
 use Salehhashemi\OtpManager\Dto\OtpDto;
 use Salehhashemi\OtpManager\Dto\SentOtpDto;
 use Salehhashemi\OtpManager\Events\OtpPrepared;
@@ -20,9 +21,14 @@ class OtpManager
 
     private int $waitingTime;
 
+    protected MobileValidatorInterface $mobileValidator;
+
     public function __construct()
     {
         $this->waitingTime = config('otp.waiting_time');
+
+        $mobileValidationClass = config('otp.mobile_validation_class');
+        $this->mobileValidator = app()->make($mobileValidationClass);
     }
 
     /**
@@ -134,10 +140,6 @@ class OtpManager
 
         $this->type = $type;
 
-        if (empty($mobile)) {
-            return null;
-        }
-
         return ConfigurableCache::get($this->getCacheKey($mobile, 'value'), 'otp');
     }
 
@@ -151,10 +153,6 @@ class OtpManager
         $this->validateMobile($mobile);
 
         $this->type = $type;
-
-        if (empty($mobile)) {
-            return false;
-        }
 
         return ConfigurableCache::delete($this->getCacheKey($mobile, 'value'), 'otp');
     }
@@ -257,8 +255,6 @@ class OtpManager
      */
     protected function validateMobile(string $mobile): void
     {
-        if (empty($mobile)) {
-            throw new \InvalidArgumentException('Mobile number cannot be empty.');
-        }
+        $this->mobileValidator->validate($mobile);
     }
 }
