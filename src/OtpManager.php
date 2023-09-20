@@ -35,10 +35,13 @@ class OtpManager
      * @param  string  $type    The type or category of OTP being sent (e.g., 'login', 'reset_password').
      * @return \Salehhashemi\OtpManager\Dto\SentOtpDto  An object containing details of the sent OTP.
      *
+     * @throws \InvalidArgumentException  If the Mobile string is empty
      * @throws \Exception  If the OTP generation fails or any other exception occurs.
      */
     public function send(string $mobile, string $type): SentOtpDto
     {
+        $this->validateMobile($mobile);
+
         $this->type = $type;
         $this->trackingCode = Str::uuid()->toString();
 
@@ -59,11 +62,14 @@ class OtpManager
      * @param  string  $type    The type or category of OTP being sent (e.g., 'login', 'reset_password').
      * @return \Salehhashemi\OtpManager\Dto\SentOtpDto  An object containing details of the sent OTP.
      *
+     * @throws \InvalidArgumentException  If the Mobile string is empty
      * @throws \Illuminate\Validation\ValidationException  If the OTP cannot be resent due to throttle restrictions.
      * @throws \Exception  If any other exception occurs.
      */
     public function sendAndRetryCheck(string $mobile, string $type): SentOtpDto
     {
+        $this->validateMobile($mobile);
+
         $this->type = $type;
 
         $created = $this->getSentAt($mobile, $type);
@@ -96,9 +102,13 @@ class OtpManager
      * @param  int  $otp The OTP code to verify.
      * @param  string  $trackingCode The tracking code associated with the OTP.
      * @return bool  True if the provided OTP and tracking code match the stored ones, false otherwise.
+     *
+     * @throws \InvalidArgumentException  If the Mobile string is empty
      */
     public function verify(string $mobile, string $type, int $otp, string $trackingCode): bool
     {
+        $this->validateMobile($mobile);
+
         $this->type = $type;
         $this->trackingCode = $trackingCode;
 
@@ -116,9 +126,13 @@ class OtpManager
      * @param  string  $mobile  The mobile number associated with the OTP.
      * @param  string  $type    The type or category of OTP (e.g., 'login', 'reset_password').
      * @return \Salehhashemi\OtpManager\Dto\OtpDto|null  An OtpDto object containing the OTP code and tracking code, or null if not found.
+     *
+     * @throws \InvalidArgumentException  If the Mobile string is empty
      */
     public function getVerifyCode(string $mobile, string $type): ?OtpDto
     {
+        $this->validateMobile($mobile);
+
         $this->type = $type;
 
         if (empty($mobile)) {
@@ -130,9 +144,13 @@ class OtpManager
 
     /**
      * Delete the verification code for a mobile number.
+     *
+     * @throws \InvalidArgumentException  If the Mobile string is empty
      */
     public function deleteVerifyCode(string $mobile, string $type): bool
     {
+        $this->validateMobile($mobile);
+
         $this->type = $type;
 
         if (empty($mobile)) {
@@ -146,9 +164,13 @@ class OtpManager
      * Retrieve the time when the OTP was sent to the user.
      *
      * @return \Illuminate\Support\Carbon|null A Carbon instance representing the time the OTP was sent, or null if not available.
+     *
+     * @throws \InvalidArgumentException  If the Mobile string is empty
      */
     public function getSentAt(string $mobile, string $type): ?Carbon
     {
+        $this->validateMobile($mobile);
+
         $this->type = $type;
 
         if (empty($mobile)) {
@@ -167,25 +189,32 @@ class OtpManager
      * Check if a verification code has been sent to a specified mobile number.
      *
      * @return bool    True if the verification code has been sent, false otherwise.
+     *
+     * @throws \InvalidArgumentException  If the Mobile string is empty
      */
     public function isVerifyCodeHasBeenSent(string $mobile, string $type): bool
     {
+        $this->validateMobile($mobile);
+
         $this->type = $type;
 
         if (empty($mobile)) {
             return false;
         }
 
-        return ConfigurableCache::get($this->getCacheKey($mobile, 'value'), 'otp')['otp'] !== null;
+        return ConfigurableCache::get($this->getCacheKey($mobile, 'value'), 'otp') !== null;
     }
 
     /**
      * Generate a new OTP code within the configured range and store it in the cache.
      *
      * @throws \Exception  If random number generation fails.
+     * @throws \InvalidArgumentException  If the Mobile string is empty
      */
     protected function getNewCode(string $mobile): int
     {
+        $this->validateMobile($mobile);
+
         $min = config('otp.code_min');
         $max = config('otp.code_max');
 
@@ -209,6 +238,8 @@ class OtpManager
      * @param  string  $mobile  The mobile number to which the OTP will be sent.
      * @param  string  $for     Indicates the intended usage of the cache key (e.g., 'value', 'created').
      * @return string  The generated cache key.
+     *
+     * @throws \InvalidArgumentException  If the Mobile string is empty
      */
     protected function getCacheKey(string $mobile, string $for): string
     {
@@ -218,5 +249,17 @@ class OtpManager
             $for,
             $this->type
         );
+    }
+
+    /**
+     * Validates the provided mobile number.
+     *
+     * @throws \InvalidArgumentException
+     */
+    private function validateMobile(string $mobile): void
+    {
+        if (empty($mobile)) {
+            throw new \InvalidArgumentException('Mobile number cannot be empty.');
+        }
     }
 }
