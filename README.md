@@ -72,8 +72,6 @@ Now open the generated `SendOtpNotification` listener file, typically located at
 
 Here's a sample implementation:
 ```bash
-namespace App\Listeners;
-
 use Salehhashemi\OtpManager\Events\OtpPrepared;
 
 class SendOtpNotification
@@ -116,9 +114,7 @@ Here's how you can do it:
 
 1. Create a Custom Validator Class
 First, create a class that implements `MobileValidatorInterface`. This interface expects you to define a validate method.
-    ```bash
-    namespace YourNamespace;
-    
+    ```bash 
     use Salehhashemi\OtpManager\Contracts\MobileValidatorInterface;
     
     class CustomMobileValidator implements MobileValidatorInterface
@@ -139,6 +135,32 @@ Next, open your OTP configuration file and update the `mobile_validation_class` 
 * `\InvalidArgumentException` will be thrown if the mobile number is empty.
 * `\Exception` will be thrown for general exceptions, like OTP generation failures.
 * `\Illuminate\Validation\ValidationException` will be thrown for throttle restrictions.
+
+## Using Enums for OTP Types
+You can take advantage of enums to define your OTP types. Enums provide a more expressive way to manage different categories of OTPs.
+
+### How to Define an OTP Enum
+```bash
+use Salehhashemi\OtpManager\Contracts\OtpTypeInterface;
+
+enum MyOtpEnum: string implements OtpTypeInterface
+{
+    case SIGNUP = 'signup';
+    case RESET_PASSWORD = 'reset_password';
+
+    public function identifier(): string
+    {
+        return $this->value;
+    }
+}
+```
+### Usage
+After defining your enum, you can use it just like any other OTP type:
+```bash
+$otpManager->send('1234567890', MyOtpEnum::SIGNUP);
+$otpManager->verify('1234567890', MyOtpEnum::SIGNUP, $otpCode, $trackingCode);
+```
+
 
 ## Docker Setup
 This project uses Docker for local development and testing. Make sure you have Docker and Docker Compose installed on your system before proceeding.
