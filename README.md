@@ -131,11 +131,6 @@ Next, open your OTP configuration file and update the `mobile_validation_class` 
     'mobile_validation_class' => CustomMobileValidator::class,
     ```
 
-### Exceptions
-* `\InvalidArgumentException` will be thrown if the mobile number is empty.
-* `\Exception` will be thrown for general exceptions, like OTP generation failures.
-* `\Illuminate\Validation\ValidationException` will be thrown for throttle restrictions.
-
 ## Using Enums for OTP Types
 You can take advantage of enums to define your OTP types. Enums provide a more expressive way to manage different categories of OTPs.
 
@@ -160,6 +155,11 @@ After defining your enum, you can use it just like any other OTP type:
 $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 $otpManager->verify('1234567890', MyOtpEnum::SIGNUP, $otpCode, $trackingCode);
 ```
+
+### Exceptions
+* `\InvalidArgumentException` will be thrown if the mobile number is empty.
+* `\Exception` will be thrown for general exceptions, like OTP generation failures.
+* `\Illuminate\Validation\ValidationException` will be thrown for throttle restrictions.
 
 
 ## Docker Setup
