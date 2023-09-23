@@ -9,6 +9,7 @@ use Salehhashemi\ConfigurableCache\ConfigurableCacheServiceProvider;
 use Salehhashemi\OtpManager\Events\OtpPrepared;
 use Salehhashemi\OtpManager\OtpManager;
 use Salehhashemi\OtpManager\OtpManagerServiceProvider;
+use Salehhashemi\OtpManager\Tests\Enums\MyOtpEnum;
 
 class OtpManagerTest extends BaseTest
 {
@@ -25,7 +26,7 @@ class OtpManagerTest extends BaseTest
         Event::fake();
 
         $otpManager = new OtpManager();
-        $sentOtp = $otpManager->send('1234567890', 'sms');
+        $sentOtp = $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
         $this->assertNotNull($sentOtp);
 
@@ -37,9 +38,9 @@ class OtpManagerTest extends BaseTest
     public function test_verify_function_verifies_otp()
     {
         $otpManager = new OtpManager();
-        $sentOtp = $otpManager->send('1234567890', 'sms');
+        $sentOtp = $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
-        $isVerified = $otpManager->verify('1234567890', 'sms', $sentOtp->code, $sentOtp->trackingCode);
+        $isVerified = $otpManager->verify('1234567890', MyOtpEnum::SIGNUP, $sentOtp->code, $sentOtp->trackingCode);
 
         $this->assertTrue($isVerified);
     }
@@ -47,11 +48,11 @@ class OtpManagerTest extends BaseTest
     public function test_delete_function_deletes_otp()
     {
         $otpManager = new OtpManager();
-        $otpManager->send('1234567890', 'sms');
+        $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
-        $otpManager->deleteVerifyCode('1234567890', 'sms');
+        $otpManager->deleteVerifyCode('1234567890', MyOtpEnum::SIGNUP);
 
-        $isVerified = $otpManager->verify('1234567890', 'sms', 123456, '123456');
+        $isVerified = $otpManager->verify('1234567890', MyOtpEnum::SIGNUP, 123456, '123456');
 
         $this->assertFalse($isVerified);
     }
@@ -62,15 +63,15 @@ class OtpManagerTest extends BaseTest
         $this->expectExceptionMessage('Mobile number cannot be empty.');
 
         $otpManager = new OtpManager();
-        $otpManager->send('', 'sms');
+        $otpManager->send('', MyOtpEnum::SIGNUP);
     }
 
     public function test_verify_function_fails_for_wrong_code()
     {
         $otpManager = new OtpManager();
-        $sentOtp = $otpManager->send('1234567890', 'sms');
+        $sentOtp = $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
-        $isVerified = $otpManager->verify('1234567890', 'sms', 1, $sentOtp->trackingCode);
+        $isVerified = $otpManager->verify('1234567890', MyOtpEnum::SIGNUP, 1, $sentOtp->trackingCode);
 
         $this->assertFalse($isVerified);
     }
@@ -78,9 +79,9 @@ class OtpManagerTest extends BaseTest
     public function test_verify_function_fails_for_wrong_tracking_code()
     {
         $otpManager = new OtpManager();
-        $sentOtp = $otpManager->send('1234567890', 'sms');
+        $sentOtp = $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
-        $isVerified = $otpManager->verify('1234567890', 'sms', $sentOtp->code, 'wrongTrackingCode');
+        $isVerified = $otpManager->verify('1234567890', MyOtpEnum::SIGNUP, $sentOtp->code, 'wrongTrackingCode');
 
         $this->assertFalse($isVerified);
     }
@@ -88,9 +89,9 @@ class OtpManagerTest extends BaseTest
     public function test_getSentAt_returns_correct_time()
     {
         $otpManager = new OtpManager();
-        $otpManager->send('1234567890', 'sms');
+        $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
-        $sentAt = $otpManager->getSentAt('1234567890', 'sms');
+        $sentAt = $otpManager->getSentAt('1234567890', MyOtpEnum::SIGNUP);
 
         $this->assertInstanceOf(Carbon::class, $sentAt);
     }
@@ -98,9 +99,9 @@ class OtpManagerTest extends BaseTest
     public function test_isVerifyCodeHasBeenSent_returns_true()
     {
         $otpManager = new OtpManager();
-        $otpManager->send('1234567890', 'sms');
+        $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
-        $isSent = $otpManager->isVerifyCodeHasBeenSent('1234567890', 'sms');
+        $isSent = $otpManager->isVerifyCodeHasBeenSent('1234567890', MyOtpEnum::SIGNUP);
 
         $this->assertTrue($isSent);
     }
@@ -108,10 +109,10 @@ class OtpManagerTest extends BaseTest
     public function test_sendAndRetryCheck_throws_validation_exception_for_quick_retry()
     {
         $otpManager = new OtpManager();
-        $otpManager->send('1234567890', 'sms');
+        $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
         $this->expectException(ValidationException::class);
 
-        $otpManager->sendAndRetryCheck('1234567890', 'sms');
+        $otpManager->sendAndRetryCheck('1234567890', MyOtpEnum::SIGNUP);
     }
 }
