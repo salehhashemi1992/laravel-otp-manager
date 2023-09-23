@@ -16,12 +16,12 @@ class OtpManagerServiceProvider extends ServiceProvider
         // Publishing the lang file.
         $this->publishes([
             __DIR__.'/../resources/lang' => resource_path('lang/vendor/otp-manager'),
-        ], 'translations');
+        ], 'lang');
 
         // Publishing the configuration file.
         $this->publishes([
             __DIR__.'/../config/otp.php' => config_path('otp.php'),
-        ], 'otp.config');
+        ], 'config');
     }
 
     /**
