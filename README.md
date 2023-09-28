@@ -28,20 +28,20 @@ $otpManager = new \Salehhashemi\OtpManager\OtpManager();
 ```
 ### Sending OTP
 ```bash
-$sentOtp = $otpManager->send("1234567890", "login");
+$sentOtp = $otpManager->send("1234567890");
 ```
 ### Resending OTP
 The `sendAndRetryCheck` method will throw a `ValidationException` if you try to resend the OTP before the waiting time expires.
 ```bash
-$sentOtp = $otpManager->sendAndRetryCheck("1234567890", "login");
+$sentOtp = $otpManager->sendAndRetryCheck("1234567890");
 ```
 ### Verifying OTP
 ```bash
-$isVerified = $otpManager->verify("1234567890", "login", 123456, "uuid-string");
+$isVerified = $otpManager->verify("1234567890", 123456, "uuid-string");
 ```
 ### Deleting Verification Code
 ```bash
-$isDeleted = $otpManager->deleteVerifyCode("1234567890", "login");
+$isDeleted = $otpManager->deleteVerifyCode("1234567890");
 ```
 
 ## Handling and Listening to the `OtpPrepared` Event
@@ -92,6 +92,31 @@ Once you've set up the listener, generate a new OTP through the `OtpManager` pac
 
 That's it! You've successfully set up an event listener for the `OtpPrepared` event in the `OtpManager` package.
 
+## Using Enums for OTP Types
+You can take advantage of enums to define your OTP types. Enums provide a more expressive way to manage different categories of OTPs.
+
+### How to Define an OTP Enum
+```bash
+use Salehhashemi\OtpManager\Contracts\OtpTypeInterface;
+
+enum MyOtpEnum: string implements OtpTypeInterface
+{
+    case SIGNUP = 'signup';
+    case RESET_PASSWORD = 'reset_password';
+
+    public function identifier(): string
+    {
+        return $this->value;
+    }
+}
+```
+### Usage
+After defining your enum, you can use it just like any other OTP type:
+```bash
+$otpManager->send('1234567890', MyOtpEnum::SIGNUP);
+$otpManager->verify('1234567890', $otpCode, $trackingCode, MyOtpEnum::SIGNUP);
+```
+
 ## Configuration
 To publish the config file, run the following command:
 ```bash
@@ -130,31 +155,6 @@ Next, open your OTP configuration file and update the `mobile_validation_class` 
     ```bash
     'mobile_validation_class' => CustomMobileValidator::class,
     ```
-
-## Using Enums for OTP Types
-You can take advantage of enums to define your OTP types. Enums provide a more expressive way to manage different categories of OTPs.
-
-### How to Define an OTP Enum
-```bash
-use Salehhashemi\OtpManager\Contracts\OtpTypeInterface;
-
-enum MyOtpEnum: string implements OtpTypeInterface
-{
-    case SIGNUP = 'signup';
-    case RESET_PASSWORD = 'reset_password';
-
-    public function identifier(): string
-    {
-        return $this->value;
-    }
-}
-```
-### Usage
-After defining your enum, you can use it just like any other OTP type:
-```bash
-$otpManager->send('1234567890', MyOtpEnum::SIGNUP);
-$otpManager->verify('1234567890', MyOtpEnum::SIGNUP, $otpCode, $trackingCode);
-```
 
 ### Exceptions
 * `\InvalidArgumentException` will be thrown if the mobile number is empty.
