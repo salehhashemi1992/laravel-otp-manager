@@ -2,6 +2,9 @@
 
 All notable changes will be documented in this file.
 
+## v1.0.0
+- make enum type nullable
+
 ## v0.9.8
 - enum type interface
 
