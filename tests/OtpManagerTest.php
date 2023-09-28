@@ -40,7 +40,17 @@ class OtpManagerTest extends BaseTest
         $otpManager = new OtpManager();
         $sentOtp = $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
-        $isVerified = $otpManager->verify('1234567890', MyOtpEnum::SIGNUP, $sentOtp->code, $sentOtp->trackingCode);
+        $isVerified = $otpManager->verify('1234567890', $sentOtp->code, $sentOtp->trackingCode, MyOtpEnum::SIGNUP);
+
+        $this->assertTrue($isVerified);
+    }
+
+    public function test_verify_function_verifies_otp_without_type()
+    {
+        $otpManager = new OtpManager();
+        $sentOtp = $otpManager->send('1234567890');
+
+        $isVerified = $otpManager->verify('1234567890', $sentOtp->code, $sentOtp->trackingCode);
 
         $this->assertTrue($isVerified);
     }
@@ -52,7 +62,7 @@ class OtpManagerTest extends BaseTest
 
         $otpManager->deleteVerifyCode('1234567890', MyOtpEnum::SIGNUP);
 
-        $isVerified = $otpManager->verify('1234567890', MyOtpEnum::SIGNUP, 123456, '123456');
+        $isVerified = $otpManager->verify('1234567890', 123456, '123456', MyOtpEnum::SIGNUP);
 
         $this->assertFalse($isVerified);
     }
@@ -71,7 +81,7 @@ class OtpManagerTest extends BaseTest
         $otpManager = new OtpManager();
         $sentOtp = $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
-        $isVerified = $otpManager->verify('1234567890', MyOtpEnum::SIGNUP, 1, $sentOtp->trackingCode);
+        $isVerified = $otpManager->verify('1234567890', 1, $sentOtp->trackingCode, MyOtpEnum::SIGNUP);
 
         $this->assertFalse($isVerified);
     }
@@ -81,7 +91,7 @@ class OtpManagerTest extends BaseTest
         $otpManager = new OtpManager();
         $sentOtp = $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
-        $isVerified = $otpManager->verify('1234567890', MyOtpEnum::SIGNUP, $sentOtp->code, 'wrongTrackingCode');
+        $isVerified = $otpManager->verify('1234567890', $sentOtp->code, 'wrongTrackingCode', MyOtpEnum::SIGNUP);
 
         $this->assertFalse($isVerified);
     }
