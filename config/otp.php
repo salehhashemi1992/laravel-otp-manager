@@ -25,8 +25,8 @@ return [
     | OTP codes. Adjust these values as per your security requirements.
     |
     */
-    'code_min' => 111111,
-    'code_max' => 999999,
+    'code_min' => 1111,
+    'code_max' => 9999,
 
     /*
     |--------------------------------------------------------------------------
