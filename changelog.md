@@ -2,6 +2,9 @@
 
 All notable changes will be documented in this file.
 
+## v1.1.1
+- default 4 digits otp range
+
 ## v1.1.0
 - OtpManager facade implementation
 
