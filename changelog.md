@@ -2,6 +2,9 @@
 
 All notable changes will be documented in this file.
 
+## v1.1.0
+- OtpManager facade implementation
+
 ## v1.0.0
 - make enum type nullable
 
