@@ -22,26 +22,25 @@ To install the package, you can run the following command:
 composer require salehhashemi/laravel-otp-manager
 ```
 ## Usage
-Create an instance of `OtpManager`:
-```bash
-$otpManager = new \Salehhashemi\OtpManager\OtpManager();
-```
+
 ### Sending OTP
-```bash
-$sentOtp = $otpManager->send("1234567890");
+```php
+use Salehhashemi\OtpManager\Facade\OtpManager;
+
+$sentOtp = OtpManager::send("1234567890");
 ```
 ### Resending OTP
 The `sendAndRetryCheck` method will throw a `ValidationException` if you try to resend the OTP before the waiting time expires.
-```bash
-$sentOtp = $otpManager->sendAndRetryCheck("1234567890");
+```php
+$sentOtp = OtpManager::sendAndRetryCheck("1234567890");
 ```
 ### Verifying OTP
-```bash
-$isVerified = $otpManager->verify("1234567890", 123456, "uuid-string");
+```php
+$isVerified = OtpManager::verify("1234567890", 123456, "uuid-string");
 ```
 ### Deleting Verification Code
-```bash
-$isDeleted = $otpManager->deleteVerifyCode("1234567890");
+```php
+$isDeleted = OtpManager::deleteVerifyCode("1234567890");
 ```
 
 ## Handling and Listening to the `OtpPrepared` Event
@@ -52,7 +51,7 @@ Here's how to set up an event listener:
 ### Step 1: Register the Event and Listener
 First, you need to register the `OtpPrepared` event and its corresponding listener. Open your `EventServiceProvider` file, usually located at `app/Providers/EventServiceProvider.php`, and add the event and listener to the $listen array.
 
-```bash
+```php
 protected $listen = [
     \Salehhashemi\OtpManager\Events\OtpPrepared::class => [
         \App\Listeners\SendOtpNotification::class,
@@ -71,7 +70,7 @@ php artisan make:listener SendOtpNotification
 Now open the generated `SendOtpNotification` listener file, typically located at `app/Listeners/`. You'll see a handle method, where you can add your custom logic for sending the OTP.
 
 Here's a sample implementation:
-```bash
+```php
 use Salehhashemi\OtpManager\Events\OtpPrepared;
 
 class SendOtpNotification
@@ -96,7 +95,7 @@ That's it! You've successfully set up an event listener for the `OtpPrepared` ev
 You can take advantage of enums to define your OTP types. Enums provide a more expressive way to manage different categories of OTPs.
 
 ### How to Define an OTP Enum
-```bash
+```php
 use Salehhashemi\OtpManager\Contracts\OtpTypeInterface;
 
 enum MyOtpEnum: string implements OtpTypeInterface
@@ -112,9 +111,9 @@ enum MyOtpEnum: string implements OtpTypeInterface
 ```
 ### Usage
 After defining your enum, you can use it just like any other OTP type:
-```bash
-$otpManager->send('1234567890', MyOtpEnum::SIGNUP);
-$otpManager->verify('1234567890', $otpCode, $trackingCode, MyOtpEnum::SIGNUP);
+```php
+OtpManager::send('1234567890', MyOtpEnum::SIGNUP);
+OtpManager::verify('1234567890', $otpCode, $trackingCode, MyOtpEnum::SIGNUP);
 ```
 
 ## Configuration
@@ -139,7 +138,7 @@ Here's how you can do it:
 
 1. Create a Custom Validator Class
 First, create a class that implements `MobileValidatorInterface`. This interface expects you to define a validate method.
-    ```bash 
+    ```php
     use Salehhashemi\OtpManager\Contracts\MobileValidatorInterface;
     
     class CustomMobileValidator implements MobileValidatorInterface
@@ -152,7 +151,7 @@ First, create a class that implements `MobileValidatorInterface`. This interface
     ```
 2. Update Configuration
 Next, open your OTP configuration file and update the `mobile_validation_class` option to use your custom validator class:
-    ```bash
+    ```php
     'mobile_validation_class' => CustomMobileValidator::class,
     ```
 
