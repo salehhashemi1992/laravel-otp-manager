@@ -4,6 +4,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/salehhashemi/laravel-otp-manager.svg?style=flat-square)](https://packagist.org/packages/salehhashemi/laravel-otp-manager)
 [![GitHub Actions](https://img.shields.io/github/actions/workflow/status/salehhashemi1992/laravel-otp-manager/run-tests.yml?branch=main&label=tests)](https://github.com/salehhashemi1992/laravel-otp-manager/actions/workflows/run-tests.yml)
 [![StyleCI](https://github.styleci.io/repos/693593653/shield?branch=main)](https://github.styleci.io/repos/693593653?branch=main)
+[![codecov](https://codecov.io/gh/salehhashemi1992/laravel-otp-manager/graph/badge.svg?token=EJB78FT27M)](https://codecov.io/gh/salehhashemi1992/laravel-otp-manager)
 
 ![Header Image](./assets/header.png)
 
