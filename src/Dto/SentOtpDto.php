@@ -19,6 +19,9 @@ class SentOtpDto
         $this->trackingCode = $trackingCode;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [

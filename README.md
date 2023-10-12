@@ -5,6 +5,7 @@
 [![GitHub Actions](https://img.shields.io/github/actions/workflow/status/salehhashemi1992/laravel-otp-manager/run-tests.yml?branch=main&label=tests)](https://github.com/salehhashemi1992/laravel-otp-manager/actions/workflows/run-tests.yml)
 [![StyleCI](https://github.styleci.io/repos/693593653/shield?branch=main)](https://github.styleci.io/repos/693593653?branch=main)
 [![codecov](https://codecov.io/gh/salehhashemi1992/laravel-otp-manager/graph/badge.svg?token=EJB78FT27M)](https://codecov.io/gh/salehhashemi1992/laravel-otp-manager)
+[![PHPStan](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat)](https://phpstan.org/)
 
 ![Header Image](./assets/header.png)
 
