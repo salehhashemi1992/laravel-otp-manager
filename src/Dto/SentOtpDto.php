@@ -6,18 +6,11 @@ namespace Salehhashemi\OtpManager\Dto;
 
 class SentOtpDto
 {
-    public int $code;
-
-    public string $trackingCode;
-
-    private int $waitingTime;
-
-    public function __construct(int $code, int $waitingTime, string $trackingCode)
-    {
-        $this->code = $code;
-        $this->waitingTime = $waitingTime;
-        $this->trackingCode = $trackingCode;
-    }
+    public function __construct(
+        public int $code,
+        private int $waitingTime,
+        public string $trackingCode
+    ) {}
 
     /**
      * @return array<string, mixed>

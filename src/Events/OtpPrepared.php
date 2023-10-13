@@ -10,18 +10,13 @@ class OtpPrepared
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public string $mobile;
-
-    public string $code;
-
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(string $mobile, string $code)
-    {
-        $this->mobile = $mobile;
-        $this->code = $code;
-    }
+    public function __construct(
+        public string $mobile,
+        public string $code
+    ) {}
 }

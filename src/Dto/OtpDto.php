@@ -6,15 +6,10 @@ namespace Salehhashemi\OtpManager\Dto;
 
 class OtpDto
 {
-    public int $code;
-
-    public string $trackingCode;
-
-    public function __construct(int $code, string $trackingCode)
-    {
-        $this->code = $code;
-        $this->trackingCode = $trackingCode;
-    }
+    public function __construct(
+        public int $code,
+        public string $trackingCode
+    ) {}
 
     /**
      * @return array<string, mixed>
