@@ -1,0 +1,28 @@
+name: Code Quality Checks
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  static-analysis:
+    name: Static Code Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-progress --no-suggest
+
+      - name: Perform Style Check
+        run: vendor/bin/pint
+
+      - name: Perform PHPStan
+        run: vendor/bin/phpstan analyse --error-format=github
