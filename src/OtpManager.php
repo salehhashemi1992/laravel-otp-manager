@@ -90,7 +90,7 @@ class OtpManager
 
         throw ValidationException::withMessages([
             'otp' => [
-                trans('OtpManager::otp.throttle', ['seconds' => $remainingTime]),
+                trans('otp-manager::otp.throttle', ['seconds' => $remainingTime]),
             ],
         ]);
     }

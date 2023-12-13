@@ -11,11 +11,11 @@ class OtpManagerServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'OtpManager');
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'otp-manager');
 
         // Publishing the lang file.
         $this->publishes([
-            __DIR__.'/../resources/lang' => resource_path('lang/vendor/otp-manager'),
+            __DIR__.'/../lang' => $this->app->langPath('vendor/otp-manager'),
         ], 'lang');
 
         // Publishing the configuration file.
