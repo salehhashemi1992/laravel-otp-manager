@@ -22,7 +22,7 @@ jobs:
         run: composer update --prefer-dist --no-progress --no-suggest
 
       - name: Perform Style Check
-        run: vendor/bin/pint
+        run: vendor/bin/pint --test
 
       - name: Perform PHPStan
         run: vendor/bin/phpstan analyse --error-format=github
