@@ -44,7 +44,7 @@ class OtpManager
      *
      * @throws \Exception If the OTP generation fails or any other exception occurs.
      */
-    public function send(string $mobile, OtpTypeInterface $type = null): SentOtpDto
+    public function send(string $mobile, ?OtpTypeInterface $type = null): SentOtpDto
     {
         $this->validateMobile($mobile);
 
@@ -70,7 +70,7 @@ class OtpManager
      *
      * @throws \Exception If any other exception occurs.
      */
-    public function sendAndRetryCheck(string $mobile, OtpTypeInterface $type = null): SentOtpDto
+    public function sendAndRetryCheck(string $mobile, ?OtpTypeInterface $type = null): SentOtpDto
     {
         $this->validateMobile($mobile);
 
@@ -110,7 +110,7 @@ class OtpManager
      *
      * @throws \InvalidArgumentException If the Mobile string is empty
      */
-    public function verify(string $mobile, int $otp, string $trackingCode, OtpTypeInterface $type = null): bool
+    public function verify(string $mobile, int $otp, string $trackingCode, ?OtpTypeInterface $type = null): bool
     {
         $this->validateMobile($mobile);
 
@@ -132,7 +132,7 @@ class OtpManager
      * @param  \Salehhashemi\OtpManager\Contracts\OtpTypeInterface|null  $type  The type or category of OTP (e.g., 'login', 'reset_password').
      * @return \Salehhashemi\OtpManager\Dto\OtpDto|null An OtpDto object containing the OTP code and tracking code, or null if not found.
      */
-    public function getVerifyCode(string $mobile, OtpTypeInterface $type = null): ?OtpDto
+    public function getVerifyCode(string $mobile, ?OtpTypeInterface $type = null): ?OtpDto
     {
         $this->validateMobile($mobile);
 
@@ -146,7 +146,7 @@ class OtpManager
      *
      * @throws \InvalidArgumentException If the Mobile string is empty
      */
-    public function deleteVerifyCode(string $mobile, OtpTypeInterface $type = null): bool
+    public function deleteVerifyCode(string $mobile, ?OtpTypeInterface $type = null): bool
     {
         $this->validateMobile($mobile);
 
@@ -162,7 +162,7 @@ class OtpManager
      *
      * @throws \InvalidArgumentException If the Mobile string is empty
      */
-    public function getSentAt(string $mobile, OtpTypeInterface $type = null): ?Carbon
+    public function getSentAt(string $mobile, ?OtpTypeInterface $type = null): ?Carbon
     {
         $this->validateMobile($mobile);
 
@@ -187,7 +187,7 @@ class OtpManager
      *
      * @throws \InvalidArgumentException If the Mobile string is empty
      */
-    public function isVerifyCodeHasBeenSent(string $mobile, OtpTypeInterface $type = null): bool
+    public function isVerifyCodeHasBeenSent(string $mobile, ?OtpTypeInterface $type = null): bool
     {
         $this->validateMobile($mobile);
 
