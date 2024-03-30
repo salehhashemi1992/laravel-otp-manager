@@ -20,6 +20,7 @@ The `OtpManager` class is responsible for sending and verifying one-time passwor
 * Send OTPs via mobile numbers
 * Resend OTPs with built-in throttling
 * Verify OTP codes
+* Track OTP requests for security
 * Supports multiple types of OTPs (e.g., login, reset password)
 
 ## Installation
@@ -137,6 +138,23 @@ php artisan config:clear
 ```
 Then, you can adjust the waiting_time, code_min, and code_max in the `config/otp.php`
 
+## Middleware Protection
+The OtpManager package includes built-in middleware (OtpRateLimiter) to protect your application routes from excessive OTP requests. This helps prevent potential abuse.
+
+### To apply the middleware:
+
+**Register the middleware:** Add `\Salehhashemi\OtpManager\Middleware\OtpRateLimiter::class` to the `middlewareAliases` array in your `app\Http\Kernel.php` file.
+
+**Assign the middleware to routes:** You can apply it to specific routes or route groups where you want to implement rate limiting.
+
+Example:
+
+```php
+Route::middleware('otp-rate-limiter')->group(function () {
+// Routes that require OTP rate limiting go here
+});
+```
+
 ## Custom Mobile Number Validation
 The package comes with a default mobile number validator, but you can easily use your own. 
 
@@ -165,7 +183,7 @@ Next, open your OTP configuration file and update the `mobile_validation_class` 
 * `\InvalidArgumentException` will be thrown if the mobile number is empty.
 * `\Exception` will be thrown for general exceptions, like OTP generation failures.
 * `\Illuminate\Validation\ValidationException` will be thrown for throttle restrictions.
-
+* `\Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException` will be thrown for throttled requests.
 
 ## Docker Setup
 This project uses Docker for local development and testing. Make sure you have Docker and Docker Compose installed on your system before proceeding.
