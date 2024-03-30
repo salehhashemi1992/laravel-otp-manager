@@ -39,4 +39,18 @@ return [
     |
     */
     'mobile_validation_class' => DefaultMobileValidator::class,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Rate Limiting Configurations
+    |--------------------------------------------------------------------------
+    |
+    | These options define the rate limiting configurations for the OTP
+    | manager. Adjust these values as per your security requirements.
+    |
+    */
+    'rate_limiting' => [
+        'max_attempts' => 5,
+        'decay_minutes' => 1,
+    ],
 ];
