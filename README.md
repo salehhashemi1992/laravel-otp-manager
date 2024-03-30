@@ -151,7 +151,7 @@ Example:
 
 ```php
 Route::middleware('otp-rate-limiter')->group(function () {
-// Routes that require OTP rate limiting go here
+    // Routes that require OTP rate limiting go here
 });
 ```
 
