@@ -2,6 +2,12 @@
 
 All notable changes will be documented in this file.
 
+## v1.4.0
+- implement otp rate limiter middleware by @salehhashemi1992 in #18
+
+## v1.3.1
+- nullable type for default null value by @salehhashemi1992 in #17
+
 ## v1.3.0
 - Add pint and phpstan to ci steps by @salehhashemi1992 in #15
 - moved resources/lang directory to the root directory by @imahmood in #16
