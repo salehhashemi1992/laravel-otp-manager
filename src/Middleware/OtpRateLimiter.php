@@ -13,7 +13,7 @@ class OtpRateLimiter
     public function handle(Request $request, Closure $next, ?string $key = null): mixed
     {
         if ($key === null) {
-            $key = $request->ip().'|'.Str::slug($request->userAgent() ?? 'default', '|');
+            $key = 'otp-rate-limit:'.$request->ip().'|'.Str::slug($request->userAgent() ?? 'default', '|');
         }
 
         $maxAttempts = config('otp.rate_limiting.max_attempts', 5);
