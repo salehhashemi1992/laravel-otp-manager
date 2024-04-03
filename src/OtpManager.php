@@ -128,6 +128,9 @@ class OtpManager
 
         $this->resetSendAttempts($mobile); // Reset on successful verification
 
+        // Auto-delete the OTP code after successful verification
+        $this->deleteVerifyCode($mobile, $type);
+
         return true;
     }
 
