@@ -53,4 +53,15 @@ return [
         'max_attempts' => 5,
         'decay_minutes' => 1,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Verification Attempt and Lockout Configurations
+    |--------------------------------------------------------------------------
+    |
+    | These options control how many failed verification attempts are allowed
+    | before otp invalidation.
+    |
+    */
+    'max_verify_attempts' => 5,
 ];
