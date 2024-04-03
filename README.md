@@ -16,12 +16,22 @@
 The `OtpManager` class is responsible for sending and verifying one-time passwords (OTPs). It provides a comprehensive set of methods to generate, send, verify, and manage OTPs. It also integrates with Laravel cache system to throttle OTP sending and provides a layer of security by tracking OTP requests.
 
 ## Features
-* Generate OTP codes
-* Send OTPs via mobile numbers
-* Resend OTPs with built-in throttling
-* Verify OTP codes
-* Track OTP requests for security
-* Supports multiple types of OTPs (e.g., login, reset password)
+*  **Main Features**
+   *   Generate OTP codes
+   *   Send OTPs via mobile numbers
+   *   Resend OTPs with built-in throttling
+   *   Verify OTP codes
+   *   Track OTP requests
+*  **Security**
+   *   Rate limiting of OTP generation attempts (`OtpRateLimiter` middleware)
+   *   Otp Invalidation after multiple failed verifications
+   *   Automatic deletion of OTP codes after successful verification
+*  **Configuration**
+   *  Customize rate-limiting thresholds, max allowed attempts, and auto-delete
+*  **Flexibility**
+   *  Supports multiple OTP types using enums
+   *  Customizable mobile number validation
+
 
 ## Installation
 To install the package, you can run the following command:
