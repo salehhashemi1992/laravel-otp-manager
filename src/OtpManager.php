@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Salehhashemi\OtpManager;
 
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Salehhashemi\ConfigurableCache\ConfigurableCache;
@@ -119,7 +120,54 @@ class OtpManager
 
         $otpDto = $this->getVerifyCode($mobile, $type);
 
-        return $otpDto && $otp === $otpDto->code && $trackingCode === $otpDto->trackingCode;
+        if (! $otpDto || $otp !== $otpDto->code || $trackingCode !== $otpDto->trackingCode) {
+            $this->handleVerificationAttempt($mobile); // Handle failed verification attempt
+
+            return false;
+        }
+
+        $this->resetSendAttempts($mobile); // Reset on successful verification
+
+        return true;
+    }
+
+    /**
+     * Handle a verification attempt for a given mobile number.
+     *
+     * @param  string  $mobile  The mobile number to handle verification for.
+     *
+     * @throws ValidationException When the maximum verification attempts are exceeded.
+     */
+    protected function handleVerificationAttempt(string $mobile): void
+    {
+        $attemptsKey = $this->getCacheKey($mobile, 'verify_attempts');
+
+        $maxAttempts = config('otp.max_verify_attempts', 3);
+
+        $attempts = Cache::get($attemptsKey, 0) + 1;
+
+        if ($attempts > $maxAttempts) {
+            $this->deleteVerifyCode($mobile, $this->type);
+            Cache::forget($attemptsKey);
+
+            throw ValidationException::withMessages([
+                'otp' => [__('otp-manager::otp.request_new')],
+            ]);
+        }
+
+        Cache::put($attemptsKey, $attempts, $this->waitingTime);
+    }
+
+    /**
+     * Resets the send attempts for a given mobile number by clearing the cache entries.
+     *
+     * @param  string  $mobile  The mobile number for which send attempts are to be reset.
+     */
+    protected function resetSendAttempts(string $mobile): void
+    {
+        $attemptsKey = $this->getCacheKey($mobile, 'verify_attempts');
+
+        Cache::forget($attemptsKey);
     }
 
     /**
@@ -239,7 +287,7 @@ class OtpManager
     protected function getCacheKey(string $mobile, string $for): string
     {
         return sprintf(
-            'for_%s_%s_%s',
+            'otp_%s_%s_%s',
             $mobile,
             $for,
             $this->type?->identifier()

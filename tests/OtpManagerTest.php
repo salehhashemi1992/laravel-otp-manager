@@ -125,4 +125,55 @@ class OtpManagerTest extends BaseTest
 
         $otpManager->sendAndRetryCheck('1234567890', MyOtpEnum::SIGNUP);
     }
+
+    public function test_verify_function_fails_after_exceeding_max_attempts_and_advises_new_otp_request()
+    {
+        $otpManager = new OtpManager();
+
+        // Adjust the configuration for maximum verification attempts to 1 for the test.
+        config(['otp.max_verify_attempts' => 1]);
+
+        // Send OTP
+        $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
+
+        // First failed attempt
+        $otpManager->verify('1234567890', 0, 'incorrect', MyOtpEnum::SIGNUP);
+
+        // Second attempt should fail and advise for new OTP request
+        try {
+            $otpManager->verify('1234567890', 0, 'incorrectAgain', MyOtpEnum::SIGNUP);
+            $this->fail('Expected ValidationException for exceeding max verification attempts was not thrown.');
+        } catch (ValidationException $e) {
+            $this->assertSame(__('otp-manager::otp.request_new'), $e->getMessage());
+        }
+
+        // Ensure that a new OTP can be requested immediately after exceeding attempts
+        $sentOtp = $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
+        $this->assertNotNull($sentOtp, 'Failed to send a new OTP after exceeding maximum verification attempts.');
+
+        try {
+            $otpManager->sendAndRetryCheck('1234567890', MyOtpEnum::SIGNUP);
+            $this->fail('Expected ValidationException for throttle.');
+        } catch (ValidationException) {
+            // true
+        }
+    }
+
+    public function test_attempts_reset_after_successful_verification()
+    {
+        $otpManager = new OtpManager();
+        config(['otp.max_verify_attempts' => 2]);
+
+        // Send and verify OTP successfully
+        $sentOtp = $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
+        $isVerified = $otpManager->verify('1234567890', $sentOtp->code, $sentOtp->trackingCode, MyOtpEnum::SIGNUP);
+
+        $this->assertTrue($isVerified);
+
+        // Ensure that after successful verification, we can attempt to verify again without instant failure
+        $sentOtp = $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
+        $isVerifiedAgain = $otpManager->verify('1234567890', $sentOtp->code, 'incorrectCode', MyOtpEnum::SIGNUP);
+
+        $this->assertFalse($isVerifiedAgain);
+    }
 }
