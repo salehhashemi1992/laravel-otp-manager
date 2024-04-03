@@ -3,8 +3,8 @@
 All notable changes will be documented in this file.
 
 ## v1.4.3
-- add prefix for otp rate limiter middleware and encrypting the key by @salehhashemi1992 in #19
-- lockout after unsuccessful otp verification attempts by @salehhashemi1992 in #20
+- add prefix for otp rate limiter middleware by @salehhashemi1992 in #19
+- otp invalidation after unsuccessful otp verification attempts by @salehhashemi1992 in #20
 - auto-delete the OTP code after successful verification by @salehhashemi1992 #21
 
 ## v1.4.0
