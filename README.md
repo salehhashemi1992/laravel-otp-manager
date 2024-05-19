@@ -40,7 +40,7 @@ The `OtpManager` class is responsible for sending and verifying one-time passwor
 
 | Version | L9                 | L10                | L11                |
 |---------|--------------------|--------------------|--------------------|
-| 1.4     | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+| 1.5     | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
 ## Installation
 To install the package, you can run the following command:
