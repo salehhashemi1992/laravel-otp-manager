@@ -8,6 +8,7 @@
 [![GitHub Actions](https://img.shields.io/github/actions/workflow/status/salehhashemi1992/laravel-otp-manager/static-analysis.yml?branch=main&label=static-analysis)](https://github.com/salehhashemi1992/laravel-otp-manager/actions/workflows/static-analysis.yml)
 [![codecov](https://codecov.io/gh/salehhashemi1992/laravel-otp-manager/graph/badge.svg?token=EJB78FT27M)](https://codecov.io/gh/salehhashemi1992/laravel-otp-manager)
 [![PHPStan](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat)](https://phpstan.org/)
+[![PHP Version Require](http://poser.pugx.org/salehhashemi/laravel-otp-manager/require/php)](https://packagist.org/packages/salehhashemi/laravel-otp-manager)
 
 ![Header Image](./assets/header.png)
 
@@ -32,6 +33,14 @@ The `OtpManager` class is responsible for sending and verifying one-time passwor
    *  Supports multiple OTP types using enums
    *  Customizable mobile number validation
 
+## Requirements
+
+- `PHP: ^8.1`
+- `Laravel framework: ^9`
+
+| Version | L9                 | L10                | L11                |
+|---------|--------------------|--------------------|--------------------|
+| 1.4     | :white_check_mark: | :white_check_mark: | :white_check_mark: |
 
 ## Installation
 To install the package, you can run the following command:
