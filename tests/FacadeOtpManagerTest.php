@@ -11,7 +11,7 @@ use Salehhashemi\OtpManager\Facade\OtpManager;
 use Salehhashemi\OtpManager\OtpManagerServiceProvider;
 use Salehhashemi\OtpManager\Tests\Enums\MyOtpEnum;
 
-class FacadeOtpManagerTestCase extends TestCase
+class FacadeOtpManagerTest extends TestCase
 {
     /**
      * {@inheritdoc}

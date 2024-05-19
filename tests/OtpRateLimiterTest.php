@@ -8,7 +8,7 @@ use Salehhashemi\OtpManager\Middleware\OtpRateLimiter;
 use Salehhashemi\OtpManager\OtpManagerServiceProvider;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
 
-class OtpRateLimiterTestCase extends TestCase
+class OtpRateLimiterTest extends TestCase
 {
     /**
      * {@inheritdoc}

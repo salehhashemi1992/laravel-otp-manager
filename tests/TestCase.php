@@ -5,7 +5,7 @@ namespace Salehhashemi\OtpManager\Tests;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Salehhashemi\OtpManager\OtpManagerServiceProvider;
 
-abstract class TestCase extends BaseTestCase
+class TestCase extends BaseTestCase
 {
     /**
      * {@inheritdoc}
