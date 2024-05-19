@@ -4,7 +4,7 @@ namespace Salehhashemi\OtpManager\Tests;
 
 use Salehhashemi\OtpManager\Dto\OtpDto;
 
-class OtpDtoTest extends BaseTest
+class OtpDtoTestCase extends TestCase
 {
     public function test_constructor_initializes_properties_correctly(): void
     {
