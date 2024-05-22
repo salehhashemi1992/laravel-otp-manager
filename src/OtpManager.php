@@ -87,7 +87,7 @@ class OtpManager
             return $this->send($mobile, $type);
         }
 
-        $remainingTime = $retryAfter->diffInSeconds(Carbon::now());
+        $remainingTime = (int) Carbon::now()->diffInSeconds($retryAfter);
 
         throw ValidationException::withMessages([
             'otp' => [
