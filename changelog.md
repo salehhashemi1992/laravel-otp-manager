@@ -2,6 +2,9 @@
 
 All notable changes will be documented in this file.
 
+## v1.5.1
+- Incorrect OTP retry time calculation by @imahmood in #24
+
 ## v1.5.0
 - Laravel 11.x Support by @imahmood in #22
 - add laravel 11 support to the tests by @salehhashemi1992 in #23
