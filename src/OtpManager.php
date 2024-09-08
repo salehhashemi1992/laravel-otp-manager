@@ -41,11 +41,12 @@ class OtpManager
      *
      * @param  string  $mobile  The mobile number to which the OTP should be sent.
      * @param  \Salehhashemi\OtpManager\Contracts\OtpTypeInterface|null  $type  The type or category of OTP being sent (e.g., 'login', 'reset_password').
+     * @param  array<string, string>  $params  Additional parameters that can be passed to the OTP event.
      * @return \Salehhashemi\OtpManager\Dto\SentOtpDto An object containing details of the sent OTP.
      *
      * @throws \Exception If the OTP generation fails or any other exception occurs.
      */
-    public function send(string $mobile, ?OtpTypeInterface $type = null): SentOtpDto
+    public function send(string $mobile, ?OtpTypeInterface $type = null, array $params = []): SentOtpDto
     {
         $this->validateMobile($mobile);
 
@@ -54,7 +55,12 @@ class OtpManager
 
         $otp = new SentOtpDto($this->getNewCode($mobile), $this->waitingTime, $this->trackingCode);
 
-        event(new OtpPrepared(mobile: $mobile, code: (string) $otp->code));
+        event(new OtpPrepared(
+            mobile: $mobile,
+            code: (string) $otp->code,
+            type: $type,
+            params: $params,
+        ));
 
         return $otp;
     }
@@ -67,11 +73,12 @@ class OtpManager
      *
      * @param  string  $mobile  The mobile number to which the OTP should be resent.
      * @param  \Salehhashemi\OtpManager\Contracts\OtpTypeInterface|null  $type  The type or category of OTP being sent (e.g., 'login', 'reset_password').
+     * @param  array<string, string>  $params  Additional parameters that can be passed to the OTP event.
      * @return \Salehhashemi\OtpManager\Dto\SentOtpDto An object containing details of the sent OTP.
      *
      * @throws \Exception If any other exception occurs.
      */
-    public function sendAndRetryCheck(string $mobile, ?OtpTypeInterface $type = null): SentOtpDto
+    public function sendAndRetryCheck(string $mobile, ?OtpTypeInterface $type = null, array $params = []): SentOtpDto
     {
         $this->validateMobile($mobile);
 
@@ -79,12 +86,12 @@ class OtpManager
 
         $created = $this->getSentAt($mobile, $type);
         if (! $created) {
-            return $this->send($mobile, $type);
+            return $this->send($mobile, $type, $params);
         }
 
         $retryAfter = $created->addSeconds($this->waitingTime);
         if (Carbon::now()->greaterThan($retryAfter)) {
-            return $this->send($mobile, $type);
+            return $this->send($mobile, $type, $params);
         }
 
         $remainingTime = (int) Carbon::now()->diffInSeconds($retryAfter);
