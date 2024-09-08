@@ -24,14 +24,13 @@ class OtpRateLimiterTest extends TestCase
 
         $request = Request::create('/', 'GET', ['REMOTE_ADDR' => '127.0.0.1']);
 
-        $middleware = new OtpRateLimiter();
+        $middleware = new OtpRateLimiter;
 
         $this->expectException(TooManyRequestsHttpException::class);
 
         // Trigger middleware multiple times to exceed the limit
         for ($i = 0; $i < 5; $i++) {
-            $response = $middleware->handle($request, function () {
-            });
+            $response = $middleware->handle($request, function () {});
         }
     }
 
@@ -41,7 +40,7 @@ class OtpRateLimiterTest extends TestCase
 
         $request = Request::create('/', 'GET', ['REMOTE_ADDR' => '127.0.0.1']);
 
-        $middleware = new OtpRateLimiter();
+        $middleware = new OtpRateLimiter;
 
         for ($i = 0; $i < 2; $i++) {
             $response = $middleware->handle($request, function () {

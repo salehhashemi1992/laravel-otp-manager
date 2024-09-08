@@ -21,6 +21,5 @@ class OtpPrepared
         public readonly string $code,
         public readonly ?OtpTypeInterface $type,
         public readonly array $params,
-    ) {
-    }
+    ) {}
 }

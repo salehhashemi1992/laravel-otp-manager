@@ -25,7 +25,7 @@ class OtpManagerTest extends TestCase
     {
         Event::fake();
 
-        $otpManager = new OtpManager();
+        $otpManager = new OtpManager;
         $sentOtp = $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
         $this->assertNotNull($sentOtp);
@@ -37,7 +37,7 @@ class OtpManagerTest extends TestCase
 
     public function test_verify_function_verifies_otp()
     {
-        $otpManager = new OtpManager();
+        $otpManager = new OtpManager;
         $sentOtp = $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
         $isVerified = $otpManager->verify('1234567890', $sentOtp->code, $sentOtp->trackingCode, MyOtpEnum::SIGNUP);
@@ -47,7 +47,7 @@ class OtpManagerTest extends TestCase
 
     public function test_verify_function_verifies_otp_without_type()
     {
-        $otpManager = new OtpManager();
+        $otpManager = new OtpManager;
         $sentOtp = $otpManager->send('1234567890');
 
         $isVerified = $otpManager->verify('1234567890', $sentOtp->code, $sentOtp->trackingCode);
@@ -57,7 +57,7 @@ class OtpManagerTest extends TestCase
 
     public function test_delete_function_deletes_otp()
     {
-        $otpManager = new OtpManager();
+        $otpManager = new OtpManager;
         $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
         $otpManager->deleteVerifyCode('1234567890', MyOtpEnum::SIGNUP);
@@ -72,13 +72,13 @@ class OtpManagerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Mobile number cannot be empty.');
 
-        $otpManager = new OtpManager();
+        $otpManager = new OtpManager;
         $otpManager->send('', MyOtpEnum::SIGNUP);
     }
 
     public function test_verify_function_fails_for_wrong_code()
     {
-        $otpManager = new OtpManager();
+        $otpManager = new OtpManager;
         $sentOtp = $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
         $isVerified = $otpManager->verify('1234567890', 1, $sentOtp->trackingCode, MyOtpEnum::SIGNUP);
@@ -88,7 +88,7 @@ class OtpManagerTest extends TestCase
 
     public function test_verify_function_fails_for_wrong_tracking_code()
     {
-        $otpManager = new OtpManager();
+        $otpManager = new OtpManager;
         $sentOtp = $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
         $isVerified = $otpManager->verify('1234567890', $sentOtp->code, 'wrongTrackingCode', MyOtpEnum::SIGNUP);
@@ -98,7 +98,7 @@ class OtpManagerTest extends TestCase
 
     public function test_getSentAt_returns_correct_time()
     {
-        $otpManager = new OtpManager();
+        $otpManager = new OtpManager;
         $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
         $sentAt = $otpManager->getSentAt('1234567890', MyOtpEnum::SIGNUP);
@@ -108,7 +108,7 @@ class OtpManagerTest extends TestCase
 
     public function test_isVerifyCodeHasBeenSent_returns_true()
     {
-        $otpManager = new OtpManager();
+        $otpManager = new OtpManager;
         $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
         $isSent = $otpManager->isVerifyCodeHasBeenSent('1234567890', MyOtpEnum::SIGNUP);
@@ -118,7 +118,7 @@ class OtpManagerTest extends TestCase
 
     public function test_sendAndRetryCheck_throws_validation_exception_for_quick_retry()
     {
-        $otpManager = new OtpManager();
+        $otpManager = new OtpManager;
         $otpManager->send('1234567890', MyOtpEnum::SIGNUP);
 
         $this->expectException(ValidationException::class);
@@ -128,7 +128,7 @@ class OtpManagerTest extends TestCase
 
     public function test_verify_function_fails_after_exceeding_max_attempts_and_advises_new_otp_request()
     {
-        $otpManager = new OtpManager();
+        $otpManager = new OtpManager;
 
         // Adjust the configuration for maximum verification attempts to 1 for the test.
         config(['otp.max_verify_attempts' => 1]);
@@ -161,7 +161,7 @@ class OtpManagerTest extends TestCase
 
     public function test_attempts_reset_after_successful_verification()
     {
-        $otpManager = new OtpManager();
+        $otpManager = new OtpManager;
         config(['otp.max_verify_attempts' => 2]);
 
         // Send and verify OTP successfully
