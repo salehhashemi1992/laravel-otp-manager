@@ -20,6 +20,7 @@ class OtpPrepared
         public readonly string $mobile,
         public readonly string $code,
         public readonly ?OtpTypeInterface $type,
+        public string $trackingCode,
         public readonly array $params,
     ) {}
 }

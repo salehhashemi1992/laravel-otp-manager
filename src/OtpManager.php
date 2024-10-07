@@ -59,6 +59,7 @@ class OtpManager
             mobile: $mobile,
             code: (string) $otp->code,
             type: $type,
+            trackingCode: $otp->trackingCode,
             params: $params,
         ));
 
