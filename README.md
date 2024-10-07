@@ -8,7 +8,6 @@
 [![GitHub Actions](https://img.shields.io/github/actions/workflow/status/salehhashemi1992/laravel-otp-manager/static-analysis.yml?branch=main&label=static-analysis)](https://github.com/salehhashemi1992/laravel-otp-manager/actions/workflows/static-analysis.yml)
 [![codecov](https://codecov.io/gh/salehhashemi1992/laravel-otp-manager/graph/badge.svg?token=EJB78FT27M)](https://codecov.io/gh/salehhashemi1992/laravel-otp-manager)
 [![PHPStan](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat)](https://phpstan.org/)
-[![PHP Version Require](http://poser.pugx.org/salehhashemi/laravel-otp-manager/require/php)](https://packagist.org/packages/salehhashemi/laravel-otp-manager)
 
 ![Header Image](./assets/header.png)
 
