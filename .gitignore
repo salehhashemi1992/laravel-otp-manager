@@ -5,3 +5,4 @@ phpunit.xml
 phpstan.neon
 build
 composer.lock
+/.vscode
