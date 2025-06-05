@@ -35,7 +35,7 @@ The `OtpManager` class is responsible for sending and verifying one-time passwor
 ## Requirements
 
 - `PHP: ^8.1`
-- `Laravel framework: ^9`
+- `Laravel framework: ^9 | ^10 | ^11`
 
 | Version | L9                 | L10                | L11                |
 |---------|--------------------|--------------------|--------------------|
