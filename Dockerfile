@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.1-fpm
 
 # Install dependencies
 RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
