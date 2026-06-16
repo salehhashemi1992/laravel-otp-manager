@@ -2,10 +2,9 @@
 <phpunit
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         bootstrap="vendor/autoload.php"
-        backupGlobals="false"
         colors="true"
-        processIsolation="false"
-        stopOnFailure="false"
+        cacheDirectory=".phpunit.cache"
+        failOnWarning="true"
         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
 >
     <testsuites>
@@ -13,7 +12,6 @@
             <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
-
     <source>
         <include>
             <directory suffix=".php">src</directory>

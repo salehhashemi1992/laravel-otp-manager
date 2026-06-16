@@ -34,12 +34,16 @@ The `OtpManager` class is responsible for sending and verifying one-time passwor
 
 ## Requirements
 
-- `PHP: ^8.1`
-- `Laravel framework: ^9`
+- `PHP: ^8.2`
+- `Laravel framework: 12.x, 13.x`
 
-| Version | L9                 | L10                | L11                |
-|---------|--------------------|--------------------|--------------------|
-| 1.5     | :white_check_mark: | :white_check_mark: | :white_check_mark: |
+## Compatibility
+- Laravel `12.x`, `13.x`
+- PHP `8.2+`
+
+| Version | L12                | L13                |
+|---------|--------------------|--------------------|
+| 2.0     | :white_check_mark: | :white_check_mark: |
 
 ## Installation
 To install the package, you can run the following command:

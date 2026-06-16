@@ -30,7 +30,7 @@ class SentOtpDtoTest extends TestCase
         $this->assertSame($trackingCode, $trackingCodeProperty->getValue($sentOtpDto));
     }
 
-    public function test_toArray_returns_correct_array(): void
+    public function test_to_array_returns_correct_array(): void
     {
         $code = 123456;
         $waitingTime = 60;

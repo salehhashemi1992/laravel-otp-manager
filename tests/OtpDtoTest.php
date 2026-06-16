@@ -17,7 +17,7 @@ class OtpDtoTest extends TestCase
         $this->assertSame($trackingCode, $otpDto->trackingCode);
     }
 
-    public function test_toArray_returns_correct_array(): void
+    public function test_to_array_returns_correct_array(): void
     {
         $code = 123456;
         $trackingCode = '550e8400-e29b-41d4-a716-446655440000';
