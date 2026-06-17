@@ -2,6 +2,14 @@
 
 All notable changes will be documented in this file.
 
+## v2.0.0
+- Drop Laravel 9.x, 10.x, and 11.x support.
+- Add Laravel 12.x and 13.x support.
+- Require PHP 8.2+.
+- Update CI matrix to test Laravel 12.x and 13.x.
+- Update PHPStan configuration to use identifier-based error ignoring.
+- Update PHPUnit configuration with cache directory and fail-on-warning.
+
 ## v1.5.1
 - Incorrect OTP retry time calculation by @imahmood in #24
 

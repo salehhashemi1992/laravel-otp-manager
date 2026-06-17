@@ -89,7 +89,7 @@ class FacadeOtpManagerTest extends TestCase
         $this->assertFalse($isVerified);
     }
 
-    public function test_getSentAt_returns_correct_time()
+    public function test_get_sent_at_returns_correct_time()
     {
         OtpManager::send('1234567890', MyOtpEnum::SIGNUP);
 
@@ -98,7 +98,7 @@ class FacadeOtpManagerTest extends TestCase
         $this->assertInstanceOf(Carbon::class, $sentAt);
     }
 
-    public function test_isVerifyCodeHasBeenSent_returns_true()
+    public function test_is_verify_code_has_been_sent_returns_true()
     {
         OtpManager::send('1234567890', MyOtpEnum::SIGNUP);
 
@@ -107,7 +107,7 @@ class FacadeOtpManagerTest extends TestCase
         $this->assertTrue($isSent);
     }
 
-    public function test_sendAndRetryCheck_throws_validation_exception_for_quick_retry()
+    public function test_send_and_retry_check_throws_validation_exception_for_quick_retry()
     {
         OtpManager::send('1234567890', MyOtpEnum::SIGNUP);
 

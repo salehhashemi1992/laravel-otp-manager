@@ -40,9 +40,9 @@ class OtpManager
      * Generates a new OTP code, triggers an event, and returns the sent OTP details.
      *
      * @param  string  $mobile  The mobile number to which the OTP should be sent.
-     * @param  \Salehhashemi\OtpManager\Contracts\OtpTypeInterface|null  $type  The type or category of OTP being sent (e.g., 'login', 'reset_password').
+     * @param  OtpTypeInterface|null  $type  The type or category of OTP being sent (e.g., 'login', 'reset_password').
      * @param  array<string, string>  $params  Additional parameters that can be passed to the OTP event.
-     * @return \Salehhashemi\OtpManager\Dto\SentOtpDto An object containing details of the sent OTP.
+     * @return SentOtpDto An object containing details of the sent OTP.
      *
      * @throws \Exception If the OTP generation fails or any other exception occurs.
      */
@@ -73,9 +73,9 @@ class OtpManager
      * If so, resends the OTP to the given mobile number; otherwise, throws a ValidationException.
      *
      * @param  string  $mobile  The mobile number to which the OTP should be resent.
-     * @param  \Salehhashemi\OtpManager\Contracts\OtpTypeInterface|null  $type  The type or category of OTP being sent (e.g., 'login', 'reset_password').
+     * @param  OtpTypeInterface|null  $type  The type or category of OTP being sent (e.g., 'login', 'reset_password').
      * @param  array<string, string>  $params  Additional parameters that can be passed to the OTP event.
-     * @return \Salehhashemi\OtpManager\Dto\SentOtpDto An object containing details of the sent OTP.
+     * @return SentOtpDto An object containing details of the sent OTP.
      *
      * @throws \Exception If any other exception occurs.
      */
@@ -113,8 +113,8 @@ class OtpManager
      * @param  string  $mobile  The mobile number associated with the OTP.
      * @param  int  $otp  The OTP code to verify.
      * @param  string  $trackingCode  The tracking code associated with the OTP.
-     * @param  \Salehhashemi\OtpManager\Contracts\OtpTypeInterface|null  $type  The type or category of OTP (e.g.,
-     *                                                                          'login', 'reset_password').
+     * @param  OtpTypeInterface|null  $type  The type or category of OTP (e.g.,
+     *                                       'login', 'reset_password').
      * @return bool True if the provided OTP and tracking code match the stored ones, false otherwise.
      *
      * @throws \InvalidArgumentException If the Mobile string is empty
@@ -188,8 +188,8 @@ class OtpManager
      * Returns null if the mobile number is empty or if no OTP code is found.
      *
      * @param  string  $mobile  The mobile number associated with the OTP.
-     * @param  \Salehhashemi\OtpManager\Contracts\OtpTypeInterface|null  $type  The type or category of OTP (e.g., 'login', 'reset_password').
-     * @return \Salehhashemi\OtpManager\Dto\OtpDto|null An OtpDto object containing the OTP code and tracking code, or null if not found.
+     * @param  OtpTypeInterface|null  $type  The type or category of OTP (e.g., 'login', 'reset_password').
+     * @return OtpDto|null An OtpDto object containing the OTP code and tracking code, or null if not found.
      */
     public function getVerifyCode(string $mobile, ?OtpTypeInterface $type = null): ?OtpDto
     {
@@ -217,7 +217,7 @@ class OtpManager
     /**
      * Retrieve the time when the OTP was sent to the user.
      *
-     * @return \Illuminate\Support\Carbon|null A Carbon instance representing the time the OTP was sent, or null if not available.
+     * @return Carbon|null A Carbon instance representing the time the OTP was sent, or null if not available.
      *
      * @throws \InvalidArgumentException If the Mobile string is empty
      */

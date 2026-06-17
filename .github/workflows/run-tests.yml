@@ -1,58 +1,46 @@
 name: "Run Tests"
-
 on: [push, pull_request]
-
 jobs:
   test:
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
-        os: [ubuntu-latest]
-        php: [8.1, 8.2, 8.3]
-        laravel: [9.*, 10.*, 11.*]
-        dependency-version: [prefer-lowest, prefer-stable]
         include:
-          - laravel: 11.*
-            testbench: 9.*
+          - os: ubuntu-latest
+            dependency-version: prefer-stable
+            laravel: 12.*
+            php: 8.2
+            testbench: 10.*
             phpunit: 11.*
-
-          - laravel: 10.*
-            testbench: 8.*
-            phpunit: 11.*
-
-          - laravel: 9.*
-            testbench: 7.*
-            phpunit: 10.*
-
-        exclude:
-          - laravel: 11.*
-            php: 8.1
-
-          - laravel: 9.*
+          - os: ubuntu-latest
+            dependency-version: prefer-stable
+            laravel: 12.*
             php: 8.3
-
-    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
-
+            testbench: 10.*
+            phpunit: 11.*
+          - os: ubuntu-latest
+            dependency-version: prefer-stable
+            laravel: 13.*
+            php: 8.4
+            testbench: 11.*
+            phpunit: 11.*
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - TB${{ matrix.testbench }} - ${{ matrix.dependency-version }} - ${{ matrix.os }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-
+        uses: actions/checkout@v6
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
           extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, iconv
           coverage: xdebug
-
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:>=2.62.1" --no-interaction --no-update
           composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction
-
       - name: Execute tests with Coverage
         run: vendor/bin/phpunit --coverage-clover=coverage.xml
-
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
